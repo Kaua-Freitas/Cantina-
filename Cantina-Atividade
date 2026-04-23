@@ -1,0 +1,98 @@
+# Desafio 1
+vendas = {}
+
+while True:
+    p = input("Produto (ou 'fim'): ").capitalize()
+    if p == 'Fim':
+        break
+
+    if p not in vendas:
+        vendas[p] = [float(input("Preço: ")), 0]
+
+    vendas[p][1] += int(input("Qtd: "))
+
+total = 0
+mais = ["", 0]
+
+for p, (preco, qtd) in vendas.items():
+    sub = preco * qtd
+    total += sub
+
+    if qtd > mais[1]:
+        mais = [p, qtd]
+
+    print(f"{p}: {qtd} x {preco:.2f} = {sub:.2f}")
+
+print(f"Total: {total:.2f}")
+print(f"Mais vendido: {mais[0]} ({mais[1]})")
+
+# Desafio 2
+produtos = {}
+vendas = {}
+
+while True:
+    op = input("1-Cad 2-Venda 3-Rel 4-Sair: ")
+
+    if op == "1":
+        p = input("Produto: ").capitalize()
+        if p not in produtos:
+            produtos[p] = float(input("Preço: "))
+
+    elif op == "2":
+        p = input("Produto: ").capitalize()
+        if p in produtos:
+            vendas[p] = vendas.get(p, 0) + int(input("Qtd: "))
+
+    elif op == "3":
+        total = 0
+        mais = ["", 0]
+
+        for p in vendas:
+            sub = produtos[p] * vendas[p]
+            total += sub
+
+            if vendas[p] > mais[1]:
+                mais = [p, vendas[p]]
+
+            print(f"{p}: {vendas[p]} = {sub:.2f}")
+
+        print(f"Total: {total:.2f}")
+        print(f"Mais vendido: {mais[0]}")
+
+    elif op == "4":
+        break
+
+# Desafio 3
+from datetime import datetime
+
+produtos = {}
+hist = []
+
+while True:
+    op = input("1-Cad 2-Venda 3-Hist 4-Rank 5-Sair: ")
+
+    if op == "1":
+        p = input("Produto: ").capitalize()
+        produtos[p] = float(input("Preço: "))
+
+    elif op == "2":
+        p = input("Produto: ").capitalize()
+        if p in produtos:
+            qtd = int(input("Qtd: "))
+            data = input("Data: ") or datetime.now().strftime("%d/%m/%Y")
+            hist.append((p, qtd, data))
+
+    elif op == "3":
+        for p, q, d in hist:
+            print(f"{d} - {p} - {q}")
+
+    elif op == "4":
+        rank = {}
+        for p, q, _ in hist:
+            rank[p] = rank.get(p, 0) + q
+
+        for i, (p, q) in enumerate(sorted(rank.items(), key=lambda x: x[1], reverse=True)[:3], 1):
+            print(f"{i}º {p} - {q}")
+
+    elif op == "5":
+        break
